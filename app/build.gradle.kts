@@ -1,4 +1,6 @@
-import org.jetbrains.kotlin.config.JvmTarget
+@file:OptIn(KspExperimental::class)
+
+import com.google.devtools.ksp.KspExperimental
 
 plugins {
     alias(libs.plugins.android.application)
@@ -35,11 +37,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -65,6 +67,18 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.57.2")
-    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Room (database)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
+    // Gson
+    implementation(libs.gson)
+}
+
+// ! Needed to align to Kotlin version
+ksp {
+    useKsp2 = true
 }
