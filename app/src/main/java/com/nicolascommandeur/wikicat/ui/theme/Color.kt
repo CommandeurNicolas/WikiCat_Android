@@ -2,10 +2,14 @@ package com.nicolascommandeur.wikicat.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Main colors
+val backgroundColor = Color(0xFFFEFAFA)
+val neutralColor = Color(0xFF090909)
+val neutralVariantColor = Color(0xFF454545)
+val primaryColor = Color(0xFF7352B9)
+val secondaryColor = Color(0xFFD6C7F8)
+val tertiaryColor = Color(0xFF2E185F)
+val transparentColor = Color(0xFFFFFFFF)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Chip color
+val originChipColor = Color(0xFFD4F2D2)
