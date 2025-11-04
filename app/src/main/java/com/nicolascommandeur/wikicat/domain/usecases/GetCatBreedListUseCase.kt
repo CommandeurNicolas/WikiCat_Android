@@ -1,10 +1,11 @@
 package com.nicolascommandeur.wikicat.domain.usecases
 
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
+import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
 import javax.inject.Inject
 
 class GetCatBreedListUseCase @Inject constructor(
-    // TODO: call a repository
+    private val catBreedRepository: CatBreedRepository
 ) {
-    suspend operator fun invoke(): List<CatBreed> = emptyList()
+    suspend operator fun invoke(): List<CatBreed> = catBreedRepository.getCatBreedList()
 }

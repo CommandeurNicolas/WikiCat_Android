@@ -9,7 +9,7 @@ import com.nicolascommandeur.wikicat.data.local.entities.TheCatApiVersionEntity
 @Dao
 interface TheCatApiVersionDao {
     @Query("SELECT * FROM localVersion")
-    fun getLocalVersion(): TheCatApiVersionEntity
+    fun getLocalVersion(): TheCatApiVersionEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateLocalVersion(apiVersion: TheCatApiVersionEntity)

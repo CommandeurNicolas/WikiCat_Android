@@ -5,6 +5,10 @@ import androidx.room.Room
 import com.nicolascommandeur.wikicat.data.local.WikiCatDatabase
 import com.nicolascommandeur.wikicat.data.local.dao.CatBreedDao
 import com.nicolascommandeur.wikicat.data.local.dao.TheCatApiVersionDao
+import com.nicolascommandeur.wikicat.data.remote.api.ApiClient
+import com.nicolascommandeur.wikicat.data.remote.api.TheCatApi
+import com.nicolascommandeur.wikicat.data.repositories.CatBreedRepositoryImpl
+import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +19,9 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Provides
+    fun provideTheCatApi(): TheCatApi = ApiClient.theCatApi
+
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): WikiCatDatabase {
         return Room.databaseBuilder(
@@ -29,4 +36,8 @@ object AppModule {
 
     @Provides
     fun provideCatBreedDao(database: WikiCatDatabase): CatBreedDao = database.catBreedDao()
+
+    @Provides
+    fun provideCatBreedRepository(api: TheCatApi, apiVersionDao: TheCatApiVersionDao, catBreedDao: CatBreedDao): CatBreedRepository =
+        CatBreedRepositoryImpl(api = api, apiVersionDao = apiVersionDao, catBreedDao = catBreedDao)
 }
