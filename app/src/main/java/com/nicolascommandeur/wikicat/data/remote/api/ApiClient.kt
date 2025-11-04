@@ -2,6 +2,7 @@ package com.nicolascommandeur.wikicat.data.remote.api
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.nicolascommandeur.wikicat.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -14,14 +15,13 @@ object ApiClient {
         GsonBuilder().create()
     }
 
-    private const val API_KEY = "" // TODO: get it secretly
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request: Request = chain.request()
                     .newBuilder()
                     .header("accept", "application/json")
-                    .header("x-api-key", API_KEY)
+                    .header("x-api-key", BuildConfig.API_KEY)
                     .build()
                 chain.proceed(request)
             }
