@@ -21,6 +21,7 @@ class CatBreedRepositoryImpl @Inject constructor(
         private const val TAG = "CatBreedRepositoryImpl"
     }
 
+    @Throws(Exception::class)
     override suspend fun getCatBreedList(): List<CatBreed> {
         return try {
             val localVersion = apiVersionDao.getLocalVersion()?.toDomain()
@@ -48,6 +49,7 @@ class CatBreedRepositoryImpl @Inject constructor(
             Log.e(TAG, "getCatBreedList:CATCH --> ${e.message}")
             // Most likely an internet connection issues so fetch local data
             catBreedDao.getCatBreedList().map { it.toDomain() }
+            throw e
         }
     }
 }

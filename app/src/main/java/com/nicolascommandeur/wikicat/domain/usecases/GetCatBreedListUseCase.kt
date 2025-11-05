@@ -7,5 +7,6 @@ import javax.inject.Inject
 class GetCatBreedListUseCase @Inject constructor(
     private val catBreedRepository: CatBreedRepository
 ) {
+    @Throws(Exception::class)
     suspend operator fun invoke(): List<CatBreed> = catBreedRepository.getCatBreedList()
 }
