@@ -15,11 +15,14 @@ import com.nicolascommandeur.wikicat.domain.models.CatBreed
 import com.nicolascommandeur.wikicat.toFlagEmoji
 
 @Composable
-fun HomeBreedCardComposable(breed: CatBreed) {
+fun HomeBreedCardComposable(
+    breed: CatBreed,
+    modifier: Modifier = Modifier
+) {
     OutlinedCard(
         colors = CardDefaults.cardColors(),
         border = BorderStroke(1.dp, Color.Cyan),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {

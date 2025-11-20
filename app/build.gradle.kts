@@ -82,11 +82,14 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     // * Retrofit
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
-    // Gson
+    // * Gson
     implementation(libs.gson)
+
+    // * Compose navigation
+    implementation("androidx.navigation:navigation-compose:2.9.6")
 }
 
 // ! Needed to align to Kotlin version

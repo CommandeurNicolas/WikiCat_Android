@@ -1,5 +1,6 @@
 package com.nicolascommandeur.wikicat.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,10 @@ import com.nicolascommandeur.wikicat.ui.components.HomeBreedCardComposable
 import com.nicolascommandeur.wikicat.ui.viewmodels.HomeScreenViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel) {
+fun HomeScreen(
+    viewModel: HomeScreenViewModel,
+    onNavigateToDetails: (String) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val breedsList = uiState.breedsList
     val isInErrorState = uiState.error
@@ -46,12 +50,15 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
         }
     }
     else {
-        HomeScreenListView(breedsList)
+        HomeScreenListView(breedsList, onNavigateToDetails)
     }
 }
 
 @Composable
-fun HomeScreenListView(breedsList: List<CatBreed>) {
+fun HomeScreenListView(
+    breedsList: List<CatBreed>,
+    onNavigateToDetails: (String) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(128.dp),
         contentPadding = PaddingValues(
@@ -62,7 +69,10 @@ fun HomeScreenListView(breedsList: List<CatBreed>) {
         )
     ) {
         items(items = breedsList) { breed ->
-            HomeBreedCardComposable(breed)
+            HomeBreedCardComposable(
+                breed = breed,
+                modifier = Modifier.clickable(enabled = true, onClick = { onNavigateToDetails(breed.id) })
+            )
         }
     }
 }
