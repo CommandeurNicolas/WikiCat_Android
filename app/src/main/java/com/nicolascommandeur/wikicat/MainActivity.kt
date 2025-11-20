@@ -11,12 +11,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.nicolascommandeur.wikicat.ui.theme.WikiCatTheme
+import com.nicolascommandeur.wikicat.ui.viewmodels.BreedDetailsScreenViewModel
 import com.nicolascommandeur.wikicat.ui.viewmodels.HomeScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val homeScreenViewModel: HomeScreenViewModel by viewModels()
+    private val breedDetailsScreenViewModel: BreedDetailsScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,7 @@ class MainActivity : ComponentActivity() {
                     WikiCatNavHost(
                         navController,
                         homeScreenViewModel,
+                        breedDetailsScreenViewModel,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

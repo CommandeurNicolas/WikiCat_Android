@@ -29,7 +29,7 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     private fun loadCatBreeds() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { // TODO: move Dispatcher to repository
             val breedsList = try {
                 getCatBreedListUseCase()
             } catch(_: Exception) {

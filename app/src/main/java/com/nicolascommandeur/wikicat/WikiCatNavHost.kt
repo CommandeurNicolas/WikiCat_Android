@@ -1,7 +1,6 @@
 package com.nicolascommandeur.wikicat
 
 import android.util.Log
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,12 +10,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.nicolascommandeur.wikicat.ui.screens.BreedDetailsScreen
 import com.nicolascommandeur.wikicat.ui.screens.HomeScreen
+import com.nicolascommandeur.wikicat.ui.viewmodels.BreedDetailsScreenViewModel
 import com.nicolascommandeur.wikicat.ui.viewmodels.HomeScreenViewModel
 
 @Composable
 fun WikiCatNavHost(
     navController: NavHostController,
     homeScreenViewModel: HomeScreenViewModel,
+    breedDetailsScreenViewModel: BreedDetailsScreenViewModel,
     modifier: Modifier
 ) {
     NavHost(
@@ -43,6 +44,7 @@ fun WikiCatNavHost(
             val catBreedId: String? = backStackEntry.arguments?.getString("catBreedId")
             Log.d("MainActivity", "catBreedId = $catBreedId (${catBreedId?.javaClass})")
             BreedDetailsScreen(
+                viewModel = breedDetailsScreenViewModel,
                 catBreedId = catBreedId,
                 onBackClick = {
                     navController.popBackStack()

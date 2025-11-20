@@ -52,4 +52,8 @@ class CatBreedRepositoryImpl @Inject constructor(
             throw e
         }
     }
+
+    override suspend fun getCatBreedFromId(breedId: String): CatBreed {
+        return catBreedDao.getCatBreedFromId(breedId).toDomain()
+    }
 }
