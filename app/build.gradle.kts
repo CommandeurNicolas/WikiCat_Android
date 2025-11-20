@@ -89,7 +89,7 @@ dependencies {
     implementation(libs.gson)
 
     // * Compose navigation
-    implementation("androidx.navigation:navigation-compose:2.9.6")
+    implementation(libs.androidx.navigation.compose)
 }
 
 // ! Needed to align to Kotlin version
