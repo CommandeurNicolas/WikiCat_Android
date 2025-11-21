@@ -1,4 +1,4 @@
-package com.nicolascommandeur.wikicat
+package com.nicolascommandeur.wikicat.utils
 
 fun String.toFlagEmoji(): String {
     val firstLetter = Character.codePointAt(this, 0) - 0x41 + 0x1F1E6

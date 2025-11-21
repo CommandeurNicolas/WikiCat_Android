@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
-import com.nicolascommandeur.wikicat.toFlagEmoji
+import com.nicolascommandeur.wikicat.utils.toFlagEmoji
 
 @Composable
 fun HomeBreedCardComposable(

@@ -1,4 +1,4 @@
-package com.nicolascommandeur.wikicat
+package com.nicolascommandeur.wikicat.utils
 
 import kotlin.math.max
 

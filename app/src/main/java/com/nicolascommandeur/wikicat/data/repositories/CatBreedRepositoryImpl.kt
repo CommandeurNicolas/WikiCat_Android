@@ -1,7 +1,7 @@
 package com.nicolascommandeur.wikicat.data.repositories
 
 import android.util.Log
-import com.nicolascommandeur.wikicat.VersionUtil
+import com.nicolascommandeur.wikicat.utils.VersionUtil
 import com.nicolascommandeur.wikicat.data.local.dao.CatBreedDao
 import com.nicolascommandeur.wikicat.data.local.dao.TheCatApiVersionDao
 import com.nicolascommandeur.wikicat.data.mappers.toDomain
