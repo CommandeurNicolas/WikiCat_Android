@@ -12,34 +12,29 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class HomeScreenUiState(
-    val breedsList: List<CatBreed> = emptyList(),
-    val error: Boolean = false
-)
+sealed class HomeScreenUiState {
+    object Loading: HomeScreenUiState()
+    data class Success(val breedsList: List<CatBreed>): HomeScreenUiState()
+    data class Error(val errorMessage: String): HomeScreenUiState()
+}
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val getCatBreedListUseCase: GetCatBreedListUseCase
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
+    private val _uiState = MutableStateFlow<HomeScreenUiState>(HomeScreenUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    init {
-        loadCatBreeds()
-    }
-
-    private fun loadCatBreeds() {
+    fun loadCatBreeds() {
         viewModelScope.launch(Dispatchers.IO) { // TODO: move Dispatcher to repository
             val breedsList = try {
                 getCatBreedListUseCase()
             } catch(_: Exception) {
                 null
             }
-            _uiState.update { currentState ->
-                currentState.copy(
-                    breedsList = breedsList ?: emptyList(),
-                    error = breedsList == null
-                )
+            _uiState.update { _ ->
+                if (breedsList != null) HomeScreenUiState.Success(breedsList)
+                else HomeScreenUiState.Error("")
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
 import com.nicolascommandeur.wikicat.ui.components.HomeBreedCardComposable
+import com.nicolascommandeur.wikicat.ui.viewmodels.HomeScreenUiState
 import com.nicolascommandeur.wikicat.ui.viewmodels.HomeScreenViewModel
 
 @Composable
@@ -25,32 +27,37 @@ fun HomeScreen(
     onNavigateToDetails: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val breedsList = uiState.breedsList
-    val isInErrorState = uiState.error
 
     // TODO: add custom TopAppBar
 
-    if (isInErrorState) {
-        // TODO: add proper error view
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Text("An error occurred, check your connection and restart the app")
-        }
+    LaunchedEffect(Unit) {
+        viewModel.loadCatBreeds()
     }
-    else if (breedsList.isEmpty()) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            CircularProgressIndicator()
+
+    when(uiState) {
+        HomeScreenUiState.Loading -> {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
         }
-    }
-    else {
-        HomeScreenListView(breedsList, onNavigateToDetails)
+        is HomeScreenUiState.Success -> {
+            val breedsList = (uiState as HomeScreenUiState.Success).breedsList
+            HomeScreenListView(breedsList, onNavigateToDetails)
+        }
+        is HomeScreenUiState.Error -> {
+            // TODO: add proper error view
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text("An error occurred, check your connection and restart the app")
+            }
+        }
     }
 }
 
