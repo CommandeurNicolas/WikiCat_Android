@@ -9,6 +9,8 @@ import com.nicolascommandeur.wikicat.data.remote.api.ApiClient
 import com.nicolascommandeur.wikicat.data.remote.api.TheCatApi
 import com.nicolascommandeur.wikicat.data.repositories.CatBreedRepositoryImpl
 import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
+import com.nicolascommandeur.wikicat.domain.usecases.GetCatBreedListUseCase
+import com.nicolascommandeur.wikicat.domain.usecases.impl.GetCatBreedListUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +42,8 @@ object AppModule {
     @Provides
     fun provideCatBreedRepository(api: TheCatApi, apiVersionDao: TheCatApiVersionDao, catBreedDao: CatBreedDao): CatBreedRepository =
         CatBreedRepositoryImpl(api = api, apiVersionDao = apiVersionDao, catBreedDao = catBreedDao)
+
+    @Provides
+    fun provideGetCatBreedListUseCase(catBreedRepository: CatBreedRepository): GetCatBreedListUseCase =
+        GetCatBreedListUseCaseImpl(catBreedRepository = catBreedRepository)
 }
