@@ -27,14 +27,11 @@ class HomeScreenViewModel @Inject constructor(
 
     fun loadCatBreeds() {
         viewModelScope.launch(Dispatchers.IO) { // TODO: move Dispatcher to repository
-            val breedsList = try {
-                getCatBreedListUseCase()
-            } catch(_: Exception) {
-                null
-            }
-            _uiState.update { _ ->
-                if (breedsList != null) HomeScreenUiState.Success(breedsList)
-                else HomeScreenUiState.Error("")
+            try {
+                val breedsList = getCatBreedListUseCase() // breedsList may be empty
+                _uiState.value = HomeScreenUiState.Success(breedsList)
+            } catch(e: Exception) {
+                _uiState.value = HomeScreenUiState.Error(e.message ?: "Unknown error")
             }
         }
     }

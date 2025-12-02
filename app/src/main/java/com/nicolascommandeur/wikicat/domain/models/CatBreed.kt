@@ -54,6 +54,55 @@ class CatBreed(
     val isHypoallergenic: Boolean = hypoallergenic == 1
 
     var isFavorite: Boolean = false
+
+    companion object {
+        val testCatBreed = CatBreed(
+            id = "aege",
+            name = "Aegean",
+            weight = CatWeight(imperial = "7 - 10", metric = "3 - 5"),
+            cfaUrl = null,
+            vetStreetUrl = null,
+            vcaHospitalsUrl = null,
+            wikipediaUrl = null,
+            temperament = "Affectionate, Social, Intelligent, Playful, Active",
+            origin = "Greece",
+            countryCode = "GR",
+            description = "Native to the Greek islands known as the Cyclades in the Aegean Sea, these are natural cats, meaning they developed without humans getting involved in their breeding. As a breed, Aegean Cats are rare, although they are numerous on their home islands. They are generally friendly toward people and can be excellent cats for families with children.",
+            altNames = null,
+            lifeSpan = "9 - 12",
+            indoor = 0,
+            lap = 1,
+            adaptability = 5,
+            affectionLevel = 4,
+            childFriendly = 4,
+            dogFriendly = 4,
+            catFriendly = 3,
+            energyLevel = 3,
+            grooming = 3,
+            healthIssues = 1,
+            intelligence = 3,
+            sheddingLevel = 3,
+            socialNeeds = 4,
+            strangerFriendly = 4,
+            vocalisation = 3,
+            bidability = 3,
+            experimental = 1,
+            hairless = 1,
+            natural = 1,
+            rare = 0,
+            rex = 0,
+            suppressedTail = 0,
+            shortLegs = 0,
+            hypoallergenic = 0,
+            referenceImageId = "ozEvzdVM-",
+            image = CatImage(
+                id = "ozEvzdVM-",
+                url = "https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg",
+                width = 1200,
+                height = 800
+            )
+        )
+    }
 }
 
 class CatWeight(
