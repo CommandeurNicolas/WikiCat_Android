@@ -1,7 +1,6 @@
 package com.nicolascommandeur.wikicat.data.repositories
 
 import android.util.Log
-import com.nicolascommandeur.wikicat.utils.VersionUtil
 import com.nicolascommandeur.wikicat.data.local.dao.CatBreedDao
 import com.nicolascommandeur.wikicat.data.local.dao.TheCatApiVersionDao
 import com.nicolascommandeur.wikicat.data.mappers.toDomain
@@ -10,6 +9,7 @@ import com.nicolascommandeur.wikicat.data.remote.api.TheCatApi
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
 import com.nicolascommandeur.wikicat.domain.models.TheCatApiVersion
 import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
+import com.nicolascommandeur.wikicat.utils.VersionUtil
 import javax.inject.Inject
 
 class CatBreedRepositoryImpl @Inject constructor(
