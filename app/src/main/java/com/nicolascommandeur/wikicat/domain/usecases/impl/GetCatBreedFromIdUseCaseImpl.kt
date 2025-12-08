@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetCatBreedFromIdUseCaseImpl @Inject constructor(
     private val catBreedRepository: CatBreedRepository
 ) : GetCatBreedFromIdUseCase {
-    override suspend operator fun invoke(breedId: String): CatBreed = catBreedRepository.getCatBreedFromId(breedId)
+    override suspend operator fun invoke(breedId: String): CatBreed? = catBreedRepository.getCatBreedFromId(breedId)
 }

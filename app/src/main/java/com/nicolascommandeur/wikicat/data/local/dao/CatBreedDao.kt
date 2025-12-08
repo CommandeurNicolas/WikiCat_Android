@@ -12,7 +12,7 @@ interface CatBreedDao {
     suspend fun getCatBreedList(): List<CatBreedEntity>
 
     @Query("SELECT * FROM catBreed WHERE id = :catBreedId")
-    suspend fun getCatBreedFromId(catBreedId: String): CatBreedEntity
+    suspend fun getCatBreedFromId(catBreedId: String): CatBreedEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCatBreedList(catBreedList: List<CatBreedEntity>)
