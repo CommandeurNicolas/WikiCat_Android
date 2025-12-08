@@ -63,7 +63,7 @@ class HomeScreenViewModelTest {
         }
     }
 
-    class FakeGetCatBreedListUseCase @Inject constructor() : GetCatBreedListUseCase {
+    private class FakeGetCatBreedListUseCase @Inject constructor() : GetCatBreedListUseCase {
         // ! Configure the parameters in each tests
         var result: List<CatBreed> = emptyList()
         var shouldThrow: Boolean = false

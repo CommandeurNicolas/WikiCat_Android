@@ -66,7 +66,7 @@ class BreedDetailsScreenViewModelTest {
         }
     }
 
-    class FakeGetCatBreedFromIdUseCase @Inject constructor() : GetCatBreedFromIdUseCase {
+    private class FakeGetCatBreedFromIdUseCase @Inject constructor() : GetCatBreedFromIdUseCase {
         // ! Configure the parameters in each tests
         var result: CatBreed? = null
         var shouldThrow: Boolean = false
