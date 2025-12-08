@@ -32,6 +32,7 @@ class HomeScreenViewModelTest {
             val successState = awaitItem()
             assert(successState is HomeScreenUiState.Success)
             assert((successState as HomeScreenUiState.Success).breedsList == listOf(CatBreed.testCatBreed))
+
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -54,9 +55,10 @@ class HomeScreenViewModelTest {
             viewModel.loadCatBreeds()
 
             // ? Test that uiState is correctly updated
-            val successState = awaitItem()
-            assert(successState is HomeScreenUiState.Error)
-            assert((successState as HomeScreenUiState.Error).errorMessage == errorMessage)
+            val errorState = awaitItem()
+            assert(errorState is HomeScreenUiState.Error)
+            assert((errorState as HomeScreenUiState.Error).errorMessage == errorMessage)
+
             cancelAndIgnoreRemainingEvents()
         }
     }
