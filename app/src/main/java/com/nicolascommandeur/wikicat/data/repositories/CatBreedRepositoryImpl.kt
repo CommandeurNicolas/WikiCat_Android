@@ -48,8 +48,11 @@ class CatBreedRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Log.e(TAG, "getCatBreedList:CATCH --> ${e.message}")
             // Most likely an internet connection issues so fetch local data
-            catBreedDao.getCatBreedList().map { it.toDomain() }
-            throw e
+            val localData = catBreedDao.getCatBreedList()
+            // If local data are empty then throw the error
+            if(localData == emptyList<CatBreed>()) throw e
+            // Else return mapped local data
+            localData.map { it.toDomain() }
         }
     }
 
