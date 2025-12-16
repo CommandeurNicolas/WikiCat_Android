@@ -95,6 +95,10 @@ dependencies {
 
     // * Hilt x Compose navigation
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // * Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
 
 // ! Needed to align to Kotlin version
