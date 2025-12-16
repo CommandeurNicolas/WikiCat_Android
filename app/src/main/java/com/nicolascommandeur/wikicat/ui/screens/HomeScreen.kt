@@ -78,7 +78,8 @@ fun HomeScreenListView(
         items(items = breedsList) { breed ->
             HomeBreedCardComposable(
                 breed = breed,
-                modifier = Modifier.clickable(enabled = true, onClick = { onNavigateToDetails(breed.id) })
+                modifier = Modifier
+                    .clickable(enabled = true, onClick = { onNavigateToDetails(breed.id) })
             )
         }
     }
