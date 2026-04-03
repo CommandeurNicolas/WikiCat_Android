@@ -25,7 +25,7 @@ fun NavGraphBuilder.wikiCatNavGraph(
 
     // BREED DETAILS
     composable(
-        route = Destination.Details.route + "?catBreedId={catBreedId}",
+        route = Destination.Details.route + "/{catBreedId}",
         arguments = listOf(
             navArgument("catBreedId") {
                 type = NavType.StringType

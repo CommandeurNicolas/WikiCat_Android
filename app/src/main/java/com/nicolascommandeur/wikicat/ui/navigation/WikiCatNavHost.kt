@@ -14,7 +14,7 @@ fun WikiCatNavHost() {
     ) {
         wikiCatNavGraph(
             onNavigateToDetails = { catBreedId ->
-                navController.navigate(route = Destination.Details.route + "?catBreedId=$catBreedId")
+                navController.navigate(route = Destination.Details.route + "/$catBreedId")
             },
             onBackClick = { navController.popBackStack() }
         )
