@@ -10,6 +10,10 @@ import com.nicolascommandeur.wikicat.domain.models.CatBreed
 import com.nicolascommandeur.wikicat.domain.models.TheCatApiVersion
 import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
 import com.nicolascommandeur.wikicat.utils.VersionUtil
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CatBreedRepositoryImpl @Inject constructor(
@@ -22,8 +26,8 @@ class CatBreedRepositoryImpl @Inject constructor(
     }
 
     @Throws(Exception::class)
-    override suspend fun getCatBreedList(): List<CatBreed> {
-        return try {
+    override suspend fun fetchRemoteCatBreeds() {
+        try {
             val localVersion = apiVersionDao.getLocalVersion()?.toDomain()
             val apiVersion = api.getApiVersion().toDomain()
 
@@ -39,24 +43,24 @@ class CatBreedRepositoryImpl @Inject constructor(
                 val breeds = apiBreeds.map { it.toDomain() }
                 // 3. Update local breeds
                 catBreedDao.insertCatBreedList(breeds.map { it.toEntity() })
-                // 4. Return breeds list
-                breeds
-            } else {
-                // Local version is greater or equal so no need to fetch api breeds
-                catBreedDao.getCatBreedList().map { it.toDomain() }
             }
         } catch (e: Exception) {
             Log.e(TAG, "getCatBreedList:CATCH --> ${e.message}")
             // Most likely an internet connection issues so fetch local data
-            val localData = catBreedDao.getCatBreedList()
+            val localData = catBreedDao.getCatBreedList().cancellable()
             // If local data are empty then throw the error
-            if(localData == emptyList<CatBreed>()) throw e
-            // Else return mapped local data
-            localData.map { it.toDomain() }
+            if(localData.first().isEmpty()) throw e
         }
     }
+    override fun getCatBreedList(): Flow<List<CatBreed>> {
+        return catBreedDao.getCatBreedList().map { entities -> entities.map { it.toDomain() } }
+    }
 
-    override suspend fun getCatBreedFromId(breedId: String): CatBreed? {
-        return catBreedDao.getCatBreedFromId(breedId)?.toDomain()
+    override fun getCatBreedFromId(catBreedId: String): Flow<CatBreed> {
+        return catBreedDao.getCatBreedFromId(catBreedId).map { it.toDomain() }
+    }
+
+    override suspend fun updateFavorite(catBreedId: String, favorite: Boolean) {
+        catBreedDao.updateFavorite(catBreedId, favorite)
     }
 }

@@ -1,7 +1,8 @@
 package com.nicolascommandeur.wikicat.domain.usecases
 
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
+import kotlinx.coroutines.flow.Flow
 
 fun interface GetCatBreedFromIdUseCase {
-    suspend operator fun invoke(breedId: String): CatBreed?
+    operator fun invoke(breedId: String): Flow<CatBreed>
 }

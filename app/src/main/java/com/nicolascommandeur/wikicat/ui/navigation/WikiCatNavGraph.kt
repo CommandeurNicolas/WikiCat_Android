@@ -1,6 +1,5 @@
 package com.nicolascommandeur.wikicat.ui.navigation
 
-import android.util.Log
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -32,13 +31,10 @@ fun NavGraphBuilder.wikiCatNavGraph(
                 type = NavType.StringType
             }
         )
-    ) { backStackEntry ->
+    ) {
         val breedDetailsScreenViewModel = hiltViewModel<BreedDetailsScreenViewModel>()
-        val catBreedId: String? = backStackEntry.arguments?.getString("catBreedId")
-        Log.d("MainActivity", "catBreedId = $catBreedId (${catBreedId?.javaClass})")
         BreedDetailsScreen(
             viewModel = breedDetailsScreenViewModel,
-            catBreedId = catBreedId,
             onBackClick = onBackClick
         )
     }

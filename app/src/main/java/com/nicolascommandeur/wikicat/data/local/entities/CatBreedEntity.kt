@@ -43,7 +43,8 @@ data class CatBreedEntity(
     val shortLegs: Int?,
     val hypoallergenic: Int?,
     val referenceImageId: String?,
-    val image: CatImageEntity?
+    val image: CatImageEntity?,
+    val isFavorite: Boolean = false
 )
 
 data class CatWeightEntity(

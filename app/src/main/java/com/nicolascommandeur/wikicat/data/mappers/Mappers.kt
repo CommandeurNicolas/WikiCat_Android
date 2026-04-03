@@ -55,7 +55,8 @@ fun CatBreedDto.toDomain(): CatBreed = CatBreed(
     hypoallergenic = hypoallergenic,
     bidability = bidability,
     referenceImageId = referenceImageId,
-    image = image?.toDomain()
+    image = image?.toDomain(),
+    isFavorite = null
 )
 
 fun CatWeightDto.toDomain(): CatWeight = CatWeight(imperial, metric)
@@ -102,7 +103,8 @@ fun CatBreedEntity.toDomain(): CatBreed = CatBreed(
     shortLegs = shortLegs,
     hypoallergenic = hypoallergenic,
     referenceImageId = referenceImageId,
-    image = image?.toDomain()
+    image = image?.toDomain(),
+    isFavorite = isFavorite
 )
 
 fun CatWeightEntity.toDomain(): CatWeight = CatWeight(imperial, metric)
@@ -149,7 +151,8 @@ fun CatBreed.toEntity(): CatBreedEntity = CatBreedEntity(
     shortLegs = shortLegs,
     hypoallergenic = hypoallergenic,
     referenceImageId = referenceImageId,
-    image = image?.toEntity()
+    image = image?.toEntity(),
+    isFavorite = isFavorite ?: false
 )
 
 fun CatWeight.toEntity(): CatWeightEntity = CatWeightEntity(imperial, metric)

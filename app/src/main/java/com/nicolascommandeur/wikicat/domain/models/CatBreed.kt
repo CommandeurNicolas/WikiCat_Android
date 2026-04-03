@@ -42,7 +42,8 @@ class CatBreed(
     val shortLegs: Int?,
     val hypoallergenic: Int?,
     val referenceImageId: String?,
-    val image: CatImage?
+    val image: CatImage?,
+    val isFavorite: Boolean? // TODO: refactor isFavorite to remove nullable ?
 ) {
     val isExperimental: Boolean = experimental == 1
     val isHairless: Boolean = hairless == 1
@@ -52,8 +53,6 @@ class CatBreed(
     val hasSuppressedTail: Boolean = suppressedTail == 1
     val hasShortLegs: Boolean = shortLegs == 1
     val isHypoallergenic: Boolean = hypoallergenic == 1
-
-    var isFavorite: Boolean = false
 
     fun flagFromCountryCode(): String {
         val firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6
@@ -106,7 +105,8 @@ class CatBreed(
                 url = "https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg",
                 width = 1200,
                 height = 800
-            )
+            ),
+            isFavorite = true
         )
     }
 }

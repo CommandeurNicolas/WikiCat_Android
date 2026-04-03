@@ -1,41 +1,47 @@
 package com.nicolascommandeur.wikicat.ui.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
 import com.nicolascommandeur.wikicat.domain.usecases.GetCatBreedFromIdUseCase
+import com.nicolascommandeur.wikicat.domain.usecases.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class BreedDetailsScreenUiState {
-    object Loading: BreedDetailsScreenUiState()
-    data class Success(val catBreed: CatBreed?): BreedDetailsScreenUiState()
-    data class Error(val errorMessage: String): BreedDetailsScreenUiState()
+sealed interface BreedDetailsScreenUiState {
+    object Loading: BreedDetailsScreenUiState
+    data class Success(val catBreed: CatBreed): BreedDetailsScreenUiState
+    data class Error(val errorMessage: String): BreedDetailsScreenUiState
 }
 
 @HiltViewModel
 class BreedDetailsScreenViewModel @Inject constructor(
-    private val getCatBreedFromIdUseCase: GetCatBreedFromIdUseCase
-): ViewModel() {
-    private val _uiState = MutableStateFlow<BreedDetailsScreenUiState>(BreedDetailsScreenUiState.Loading)
-    val uiState = _uiState.asStateFlow()
-
-    fun fetchBreedInfoFromId(catBreedId: String) {
-        viewModelScope.launch(Dispatchers.IO) { // TODO: move Dispatcher to repository
-            try {
-                val breed = getCatBreedFromIdUseCase(catBreedId)
-                _uiState.value = BreedDetailsScreenUiState.Success(breed)
-            } catch (e: Exception) {
-                _uiState.value = BreedDetailsScreenUiState.Error(e.message ?: "Unknown error")
-            }
+    savedStateHandle: SavedStateHandle,
+    getCatBreedFromIdUseCase: GetCatBreedFromIdUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
+) : ViewModel() {
+    private val catBreedId: String = checkNotNull(savedStateHandle["catBreedId"])
+    val uiState: StateFlow<BreedDetailsScreenUiState> = getCatBreedFromIdUseCase(catBreedId)
+        .map <CatBreed, BreedDetailsScreenUiState> { BreedDetailsScreenUiState.Success(it) }
+        .catch {
+            emit(BreedDetailsScreenUiState.Error(it.message ?: "Unknown error"))
         }
-    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            BreedDetailsScreenUiState.Loading
+        )
 
-    fun resetUiState() {
-        _uiState.value = BreedDetailsScreenUiState.Loading
+    fun onFavoriteClicked(catBreed: CatBreed) {
+        viewModelScope.launch {
+            toggleFavoriteUseCase(catBreedId = catBreed.id, favorite = !(catBreed.isFavorite ?: false)) // TODO: review favorite = ???
+        }
     }
 }

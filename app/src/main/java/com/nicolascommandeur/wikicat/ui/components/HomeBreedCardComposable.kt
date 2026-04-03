@@ -59,7 +59,7 @@ fun HomeBreedCardComposable(
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                if (breed.isFavorite) {
+                if (breed.isFavorite == true) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
                         painter = painterResource(R.drawable.heart_filled),

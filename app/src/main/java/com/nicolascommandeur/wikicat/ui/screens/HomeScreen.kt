@@ -2,6 +2,7 @@ package com.nicolascommandeur.wikicat.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,13 +28,7 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // TODO: add custom TopAppBar
-
-    LaunchedEffect(Unit) {
-        viewModel.loadCatBreeds()
-    }
-
-    when(uiState) {
+    when(val state = uiState) {
         HomeScreenUiState.Loading -> {
             Box(
                 contentAlignment = Alignment.Center,
@@ -44,10 +38,18 @@ fun HomeScreen(
                 CircularProgressIndicator()
             }
         }
-        is HomeScreenUiState.Success -> {
-            val breedsList = (uiState as HomeScreenUiState.Success).breedsList
-            HomeScreenListView(breedsList, onNavigateToDetails)
+        is HomeScreenUiState.Empty -> {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Column {
+                    Text("No cat found, the list is empty")
+                }
+            }
         }
+        is HomeScreenUiState.Success -> HomeScreenListView(state.breedsList, onNavigateToDetails)
         is HomeScreenUiState.Error -> {
             // TODO: add proper error view
             Box(
@@ -55,14 +57,17 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                Text("An error occurred, check your connection and restart the app")
+                Column {
+                    Text("An error occurred, check your connection and restart the app")
+                    Text(state.errorMessage)
+                }
             }
         }
     }
 }
 
 @Composable
-fun HomeScreenListView(
+private fun HomeScreenListView(
     breedsList: List<CatBreed>,
     onNavigateToDetails: (String) -> Unit
 ) {

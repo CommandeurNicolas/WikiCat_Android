@@ -17,11 +17,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -43,40 +39,24 @@ import com.nicolascommandeur.wikicat.ui.viewmodels.BreedDetailsScreenViewModel
 @Composable
 fun BreedDetailsScreen(
     viewModel: BreedDetailsScreenViewModel,
-    catBreedId: String?,
     onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var isFavorite by remember { mutableStateOf(false) } // TODO: get breed value
-
-    // Fetch breed details from id when showing the Composable
-    LaunchedEffect(Unit) {
-        if (uiState is BreedDetailsScreenUiState.Loading && catBreedId != null) {
-            viewModel.fetchBreedInfoFromId(catBreedId)
-        }
-    }
-
     // Handle the system back button
     BackHandler(enabled = true) {
         onBackClick()
-        viewModel.resetUiState()
     }
 
     Column {
-        when(uiState) {
+        when(val state = uiState) {
             BreedDetailsScreenUiState.Loading -> BreedDetailsLoadingScreen()
             is BreedDetailsScreenUiState.Success -> {
-                val breed = (uiState as BreedDetailsScreenUiState.Success).catBreed
-
                 BreedDetailsSuccessScreen(
-                    breed = breed,
-                    isFavorite = isFavorite,
-                    onBackClick = {
-                        onBackClick()
-                        viewModel.resetUiState()
-                    },
-                    onFavoriteClick = { isFavorite = !isFavorite }
+                    breed = state.catBreed,
+                    isFavorite = state.catBreed.isFavorite ?: false,
+                    onBackClick = onBackClick,
+                    onFavoriteClick = { viewModel.onFavoriteClicked(state.catBreed) }
                 )
             }
             is BreedDetailsScreenUiState.Error -> BreedDetailsErrorScreen()
