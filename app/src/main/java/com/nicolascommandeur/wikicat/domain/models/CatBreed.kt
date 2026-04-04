@@ -43,7 +43,7 @@ class CatBreed(
     val hypoallergenic: Int?,
     val referenceImageId: String?,
     val image: CatImage?,
-    val isFavorite: Boolean? // TODO: refactor isFavorite to remove nullable ?
+    val isFavorite: Boolean
 ) {
     val isExperimental: Boolean = experimental == 1
     val isHairless: Boolean = hairless == 1

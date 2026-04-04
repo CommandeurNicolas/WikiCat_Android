@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CatBreedDao {
     @Query("SELECT * FROM catBreed")
-    fun getCatBreedList(): Flow<List<CatBreedEntity>>
+    fun getCatBreedListFlow(): Flow<List<CatBreedEntity>>
+
+    @Query("SELECT * FROM catBreed")
+    suspend fun getCatBreedList(): List<CatBreedEntity>
 
     @Query("SELECT * FROM catBreed WHERE id = :catBreedId")
     fun getCatBreedFromId(catBreedId: String): Flow<CatBreedEntity>

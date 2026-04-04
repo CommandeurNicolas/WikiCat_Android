@@ -6,8 +6,8 @@ import com.nicolascommandeur.wikicat.data.local.dao.TheCatApiVersionDao
 import com.nicolascommandeur.wikicat.data.mappers.toDomain
 import com.nicolascommandeur.wikicat.data.mappers.toEntity
 import com.nicolascommandeur.wikicat.data.remote.api.TheCatApi
+import com.nicolascommandeur.wikicat.data.remote.models.TheCatApiVersionDto
 import com.nicolascommandeur.wikicat.domain.models.CatBreed
-import com.nicolascommandeur.wikicat.domain.models.TheCatApiVersion
 import com.nicolascommandeur.wikicat.domain.repositories.CatBreedRepository
 import com.nicolascommandeur.wikicat.utils.VersionUtil
 import kotlinx.coroutines.flow.Flow
@@ -28,32 +28,40 @@ class CatBreedRepositoryImpl @Inject constructor(
     @Throws(Exception::class)
     override suspend fun fetchRemoteCatBreeds() {
         try {
-            val localVersion = apiVersionDao.getLocalVersion()?.toDomain()
-            val apiVersion = api.getApiVersion().toDomain()
+            val localVersion = apiVersionDao.getLocalVersion()
+            val apiVersion = api.getApiVersion().toEntity()
 
             if (
-                apiVersion.version == TheCatApiVersion.FALLBACK_API_VERSION
-                || VersionUtil.isApiVersionGreater(apiVersion = apiVersion.version, localVersion = localVersion?.version ?: TheCatApiVersion.FALLBACK_API_VERSION)
+                apiVersion.version == TheCatApiVersionDto.FALLBACK_API_VERSION
+                || VersionUtil.isApiVersionGreater(apiVersion = apiVersion.version, localVersion = localVersion?.version ?: TheCatApiVersionDto.FALLBACK_API_VERSION)
             ) {
                 // Api version is greater so fetch api breeds
                 // 1. Update local version to api version
-                apiVersionDao.updateLocalVersion(apiVersion.toEntity())
+                apiVersionDao.updateLocalVersion(apiVersion)
                 // 2. Fetch api breeds
                 val apiBreeds = api.getBreeds()
-                val breeds = apiBreeds.map { it.toDomain() }
-                // 3. Update local breeds
-                catBreedDao.insertCatBreedList(breeds.map { it.toEntity() })
+                // 3. Retrieve already saved local breeds
+                val localBreeds = catBreedDao.getCatBreedList()
+                val localMap = localBreeds.associateBy { it.id }
+
+                // 4. Merge api and local breeds to keep local fields as they are
+                val mergedBreeds = apiBreeds.map { dto ->
+                    dto.toEntity(localMap[dto.id]?.isFavorite)
+                }
+
+                // 5. Update local breeds
+                catBreedDao.insertCatBreedList(mergedBreeds)
             }
         } catch (e: Exception) {
             Log.e(TAG, "getCatBreedList:CATCH --> ${e.message}")
             // Most likely an internet connection issues so fetch local data
-            val localData = catBreedDao.getCatBreedList().cancellable()
+            val localData = catBreedDao.getCatBreedListFlow().cancellable()
             // If local data are empty then throw the error
             if(localData.first().isEmpty()) throw e
         }
     }
     override fun getCatBreedList(): Flow<List<CatBreed>> {
-        return catBreedDao.getCatBreedList().map { entities -> entities.map { it.toDomain() } }
+        return catBreedDao.getCatBreedListFlow().map { entities -> entities.map { it.toDomain() } }
     }
 
     override fun getCatBreedFromId(catBreedId: String): Flow<CatBreed> {
