@@ -135,21 +135,25 @@ private fun BreedDetailsSuccessScreen(
                 modifier = Modifier
                     .padding(top = 8.dp)
             ) {
-                Text(
-                    text = breed.flagFromCountryCode(),
-                    fontFamily = asapFontFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                )
-                Text(
-                    text = breed.origin,
-                    fontFamily = asapFontFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = neutralVariantColor, // TODO: replace by MaterialTheme
-                )
+                breed.countryCode?.let { countryCode ->
+                    Text(
+                        text = breed.flagFromCountryCode(),
+                        fontFamily = asapFontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                    )
+                }
+                breed.origin?.let { origin ->
+                    Text(
+                        text = origin,
+                        fontFamily = asapFontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = neutralVariantColor, // TODO: replace by MaterialTheme
+                    )
+                }
             }
 
             // Life span / Weight

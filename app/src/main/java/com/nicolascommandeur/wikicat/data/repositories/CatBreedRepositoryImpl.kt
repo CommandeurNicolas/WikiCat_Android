@@ -35,7 +35,7 @@ class CatBreedRepositoryImpl @Inject constructor(
                 apiVersion.version == TheCatApiVersionDto.FALLBACK_API_VERSION
                 || VersionUtil.isApiVersionGreater(apiVersion = apiVersion.version, localVersion = localVersion?.version ?: TheCatApiVersionDto.FALLBACK_API_VERSION)
             ) {
-                // Api version is greater so fetch api breeds
+                // Api version is greater or local version is null so fetch api breeds
                 // 1. Update local version to api version
                 apiVersionDao.updateLocalVersion(apiVersion)
                 // 2. Fetch api breeds

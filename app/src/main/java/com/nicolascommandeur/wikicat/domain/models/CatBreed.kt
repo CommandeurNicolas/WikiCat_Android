@@ -2,6 +2,16 @@ package com.nicolascommandeur.wikicat.domain.models
 
 import androidx.compose.runtime.Immutable
 
+// TODO: ADD or UPDATE these fields as NULLABLE
+//0: "bred_for"
+//1: "perfect_for"
+//2: "reference_image_id"
+//3: "origin"
+//4: "country_codes"
+//5: "country_code"
+//6: "breed_group"
+//7: "history"
+
 @Immutable
 class CatBreed(
     val id: String,
@@ -12,8 +22,8 @@ class CatBreed(
     val vcaHospitalsUrl: String?,
     val wikipediaUrl: String?,
     val temperament: String?,
-    val origin: String,
-    val countryCode: String,
+    val origin: String?,
+    val countryCode: String?,
     val description: String,
     val lifeSpan: String?,
     val altNames: String?,
@@ -55,6 +65,7 @@ class CatBreed(
     val isHypoallergenic: Boolean = hypoallergenic == 1
 
     fun flagFromCountryCode(): String {
+        // TODO: move to an utils file
         val firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6
         val secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6
         return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))

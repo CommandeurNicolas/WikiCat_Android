@@ -72,22 +72,26 @@ fun HomeBreedCardComposable(
 
             // Country flag + country name
             Row {
-                Text(
-                    text = breed.flagFromCountryCode(),
-                    fontFamily = asapFontFamily,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                )
-                Text(
-                    text = breed.origin,
-                    fontFamily = asapFontFamily,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                breed.countryCode?.let { countryCode ->
+                    Text(
+                        text = breed.flagFromCountryCode(),
+                        fontFamily = asapFontFamily,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                    )
+                }
+                breed.origin?.let { origin ->
+                    Text(
+                        text = origin,
+                        fontFamily = asapFontFamily,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         }
 
